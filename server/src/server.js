@@ -19,6 +19,7 @@ wsServer = new WebSocketServer({
 });
 
 let clients = {};
+let activeDisplayNames = {};
 
 // Handle websocket server request event
 wsServer.on('request', (request) => {
@@ -34,22 +35,37 @@ wsServer.on('request', (request) => {
     connection.on('message', (data) => {
         if (data.type === 'utf8') {
             const { type, message } = JSON.parse(data.utf8Data);
-            console.log('Received Message: ' + message);
-
-            // Broadcast received message to all currently active clients
-            for (let client of Object.values(clients)) {
-                client.sendUTF(data.utf8Data);
+            switch (type) {
+                case 'USER_CONNECT':
+                    console.log(`Received ${type} message to reserve display name "${message.displayName}" for id: ${connection.id}`);
+                    // Check if display name is already taken
+                    if (!Object.values(activeDisplayNames).includes(message.displayName)) {
+                        activeDisplayNames[connection.id] = message.displayName;
+                        connection.sendUTF(JSON.stringify({ type: 'USER_ACCEPT', message: message.displayName }));
+                    } else {
+                        connection.sendUTF(JSON.stringify({ type: 'USER_REJECT', message: message.displayName }));
+                    }
+                    break;
+                case 'MESSAGE':
+                    // Broadcast received message to all currently active clients
+                    for (let client of Object.values(clients)) {
+                        client.sendUTF(data.utf8Data);
+                    }
+                    break;
+                default:
+                    break;
             }
-            
         }
     });
 
     // On close event, remove the connection from the list of current clients
     connection.on('close', (reasonCode, description) => {
         delete clients[connection.id];
+        delete activeDisplayNames[connection.id];
         console.log((new Date()) + `Connection ${connection.id} disconnected. Active clients ${Object.keys(clients).length}`);
     });
 })
+
 
 
 
