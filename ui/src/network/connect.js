@@ -20,11 +20,11 @@ export const connect = (ws, setServerMessage) => {
 
     ws.current.onclose = () => {
         console.log("Websocket closed. Attempting to reconnect...");
-        // setTimeout(() => {
-        //     connect(ws);
-        //     attemptedConnects = (attemptedConnects+1 > MAX_RECONNECT_SCALE) ? 
-        //                                 MAX_RECONNECT_SCALE : attemptedConnects+1;
-        // }, Math.pow(10, attemptedConnects));
+        setTimeout(() => {
+            connect(ws);
+            attemptedConnects = (attemptedConnects+1 > MAX_RECONNECT_SCALE) ? 
+                                        MAX_RECONNECT_SCALE : attemptedConnects+1;
+        }, Math.pow(10, attemptedConnects));
     }
 
     ws.current.onerror = (err) => {

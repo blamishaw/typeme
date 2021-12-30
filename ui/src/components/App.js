@@ -23,7 +23,7 @@ const App = () => {
             <LoginForm setDisplayName={setDisplayName}/>
             <h1>Sending messages as {displayName}</h1>
         </WebSocketContext.Provider>
-    )
+    );
 }
 
 export default App;

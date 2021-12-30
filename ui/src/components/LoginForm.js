@@ -9,9 +9,11 @@ const LoginForm = ({ setDisplayName }) => {
 
     const [modalIsOpen, setModalIsOpen] = useState(true);
     const [err, setErr] = useState('');
+    let serverResponseTimer;
 
     useEffect(() => {
         if (typeof serverMessage.type === 'string'){
+            
             if (serverMessage.type === 'USER_ACCEPT') {
                 setDisplayName(serverMessage.message);
                 setModalIsOpen(false);
@@ -20,7 +22,7 @@ const LoginForm = ({ setDisplayName }) => {
                 setErr('Display name is already in use.');
             }
         }
-        
+        return () => clearTimeout(serverResponseTimer);
     }, [serverMessage])
 
     const isValidDisplayName = (displayName) => {
@@ -51,6 +53,7 @@ const LoginForm = ({ setDisplayName }) => {
         } else {
             // Check if display name is in active use
             sendMessage('USER_CONNECT', { displayName });
+            serverResponseTimer = setTimeout(() => console.log('Server unresponsive.'), 3000);
         }
     }
 
