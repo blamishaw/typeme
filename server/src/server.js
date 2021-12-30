@@ -62,8 +62,9 @@ const handleMessage = (connection, type, message) => {
             break;
         case 'MESSAGE':
             // Broadcast received message to all currently active clients
+            console.log(`Received ${type} message from "${message.from}" with content "${message.content}"`);
             for (let client of Object.values(clients)) {
-                client.sendUTF(data.utf8Data);
+                client.send(JSON.stringify({ type, message }));
             }
             break;
         default:

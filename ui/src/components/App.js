@@ -2,6 +2,9 @@ import React, { useState, useEffect, useRef } from "react";
 import { WebSocketContext } from "../network/WebSocketContext";
 import { connect, sendWSMessage } from "../network/connect";
 import LoginForm from "./LoginForm";
+import Header from "./Header";
+import Messages from "./Messages";
+import SendMessage from "./SendMessage";
 
 
 const App = () => {
@@ -21,7 +24,13 @@ const App = () => {
     return (
         <WebSocketContext.Provider value={{ displayName, sendMessage, serverMessage }}>
             <LoginForm setDisplayName={setDisplayName}/>
-            <h1>Sending messages as {displayName}</h1>
+            {displayName && 
+                <>
+                    <Header />
+                    <Messages />
+                    <SendMessage />
+                </>
+            }
         </WebSocketContext.Provider>
     );
 }
