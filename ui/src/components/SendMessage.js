@@ -9,7 +9,8 @@ const SendMessage = () => {
         const inputText = e.target[0].value;
         if (inputText) {
             const message = inputText.trim();
-            sendMessage('MESSAGE', { from: displayName, content: message })
+            sendMessage('MESSAGE', { from: displayName, content: message });
+            e.target[0].value = '';
         }
     }
 

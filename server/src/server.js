@@ -29,7 +29,7 @@ wsServer.on('request', (request) => {
     // Create unique id for connection and add it to list of clients
     connection.id = uuid.v4();
     clients[connection.id] = connection;
-    console.log((new Date()) + `Connection ${connection.id} accepted. Active clients ${Object.keys(clients).length}`);
+    console.log((new Date()) + ` Connection ${connection.id} accepted. Active clients ${Object.keys(clients).length}`);
     
 
     connection.on('message', (data) => {

@@ -5,7 +5,9 @@ const Header = () => {
     const { displayName } = useContext(WebSocketContext);
 
     return (
-        <h1>Send messages as {displayName}</h1>
+        <header>
+            <h1>Send messages as {displayName}</h1>
+        </header>
     );
 }
 

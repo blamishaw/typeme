@@ -1,5 +1,6 @@
 import React, { useState, useEffect, useContext } from 'react';
 import { WebSocketContext } from '../network/WebSocketContext';
+import Message from './Message';
 
 const Messages = () => {
     const { serverMessage } = useContext(WebSocketContext);
@@ -9,7 +10,7 @@ const Messages = () => {
     useEffect(() => {
         if (typeof serverMessage.type === 'string') {
             if (serverMessage.type === 'MESSAGE') {
-                setMessages([...messages, serverMessage.message]);
+                setMessages(prevMessages => [...prevMessages, serverMessage.message]);
             }
         }
     }, [serverMessage])
@@ -17,7 +18,7 @@ const Messages = () => {
     return (
         <div>
             {messages.map((message, idx) => 
-                <p key={idx}>From: {message.from} -- Content: {message.content}</p>)}
+                <Message key={idx} from={message.from} content={message.content}/>)}
         </div>
     );
 }

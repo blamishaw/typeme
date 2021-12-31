@@ -4,7 +4,7 @@ import { WebSocketContext } from '../network/WebSocketContext';
 
 Modal.setAppElement('#root');
 
-const LoginForm = ({ setDisplayName }) => {
+const LoginModal = ({ setDisplayName }) => {
     const { sendMessage, serverMessage } = useContext(WebSocketContext);
 
     const [modalIsOpen, setModalIsOpen] = useState(true);
@@ -69,4 +69,4 @@ const LoginForm = ({ setDisplayName }) => {
     );
 }
 
-export default LoginForm;
+export default LoginModal;
