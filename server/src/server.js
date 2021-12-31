@@ -42,6 +42,7 @@ wsServer.on('request', (request) => {
     // On close event, remove the connection from the list of current clients
     connection.on('close', (reasonCode, description) => {
         delete clients[connection.id];
+        broadcastUTFMessage('USER_CTX_MSG', { from: activeDisplayNames[connection.id], content: 'disconnect' });
         delete activeDisplayNames[connection.id];
         console.log((new Date()) + `Connection ${connection.id} disconnected. Active clients ${Object.keys(clients).length}`);
     });
@@ -56,6 +57,7 @@ const handleMessage = (connection, type, message) => {
             if (!Object.values(activeDisplayNames).includes(message.displayName)) {
                 activeDisplayNames[connection.id] = message.displayName;
                 sendUTFMessage(connection, 'USER_ACCEPT', message.displayName);
+                broadcastUTFMessage('USER_CTX_MSG', { from: activeDisplayNames[connection.id], content: 'connect' });
             } else {
                 sendUTFMessage(connection, 'USER_REJECT', message.displayName);
             }
@@ -63,12 +65,19 @@ const handleMessage = (connection, type, message) => {
         case 'MESSAGE':
             // Broadcast received message to all currently active clients
             console.log(`Received ${type} message from "${message.from}" with content "${message.content}"`);
-            for (let client of Object.values(clients)) {
-                sendUTFMessage(client, type, message);
-            }
+            broadcastUTFMessage(type, message);
             break;
         default:
             break;
+    }
+}
+
+const broadcastUTFMessage = (type, message) => {
+    console.log(`Sending broadcast of type ${type} with message ${message}`);
+    for (let client of Object.values(clients)){
+        if (client.id in activeDisplayNames){
+            sendUTFMessage(client, type, message);
+        }
     }
 }
 

@@ -3,21 +3,25 @@ import { WebSocketContext } from '../network/WebSocketContext';
 import Message from './Message';
 
 const Messages = () => {
-    const { serverMessage } = useContext(WebSocketContext);
+    const { displayName, serverMessage } = useContext(WebSocketContext);
 
+    // TODO: Refactor color logic into a custom hook
     const [messages, setMessages] = useState([]);
     const [colorMap, setColorMap] = useState({});
-    let idx = 1;
+    const [idx, setIdx] = useState(1);
 
     useEffect(() => {
         if (typeof serverMessage.type === 'string') {
             if (serverMessage.type === 'MESSAGE') {
-                // TODO: Fix
                 const from = serverMessage.message.from
-                if (!Object.keys(colorMap).includes(from)) {
+                if (from !== displayName && !Object.keys(colorMap).includes(from)) {
                     setColorMap((prevColorMap) => ({...prevColorMap, [from]: idx}));
-                    idx = (idx+1 > 6) ? 0 : idx+1;
+                    setIdx((idx+1 > 6) ? 1 : idx+1);
                 }
+                setMessages(prevMessages => [...prevMessages, serverMessage.message]);
+            }
+            if (serverMessage.type === 'USER_CTX_MSG') {
+                console.log("received ctx message");
                 setMessages(prevMessages => [...prevMessages, serverMessage.message]);
             }
         }
@@ -29,7 +33,6 @@ const Messages = () => {
       messagesEnd.scrollIntoView({ behavior: 'smooth' });
     }, [ messages ])
 
-    console.log(colorMap);
     return (
         <div className="messages-container messages-wrapper">
             <div className="messages">
@@ -40,5 +43,6 @@ const Messages = () => {
         </div>
     );
 }
+
 
 export default Messages;

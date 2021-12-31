@@ -4,6 +4,15 @@ import { WebSocketContext } from '../network/WebSocketContext';
 const Message = ({ from, content, colorId }) => {
     const { displayName } = useContext(WebSocketContext);
     const fromSelf = (from === displayName);
+    const ctxMsg = (content === 'disconnect' || content === 'connect');
+
+    if (ctxMsg) {
+        return (
+            <div className="message-ctx">
+                <p className='message-ctx__content'>User "{from}" {content}ed</p>
+            </div>
+        );
+    }
 
     return (
         <div>

@@ -80,3 +80,15 @@
     color: $lightest-purple;
     font-size: $s-size;
 }
+
+.message-ctx {
+    margin-top: 0;
+    padding: 0 0 $xs-size 0;
+    text-align: center;
+    align-items: center;
+}
+
+.message-ctx__content {
+    color: $text-purple;
+    font-style: italic;
+}
