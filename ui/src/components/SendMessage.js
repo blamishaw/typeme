@@ -15,10 +15,15 @@ const SendMessage = () => {
     }
 
     return (
-        <div>
-            <form id="send-message" autoComplete='off' onSubmit={handleSendMessage}>
-                <input autoComplete='off' placeholder='Your message here'></input>
-                <button>Send</button>
+        <div className='send-messages-container send-message'>
+            <form className="send-message__form" autoComplete='off' onSubmit={handleSendMessage}>
+                <input 
+                    autoComplete='off' 
+                    placeholder='Your message here'
+                    className='typeme-input'
+                >    
+                </input>
+                <button className='typeme-button'>Send</button>
             </form>
         </div>
     );

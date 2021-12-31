@@ -1,0 +1,37 @@
+.ReactModalPortal > div {
+    opacity: 1;
+    
+}
+
+.ReactModalPortal .ReactModal__Overlay {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 10;
+    background: $darkest-purple !important;
+    overflow-y: hidden;
+}
+
+.modal {
+    background: $dark-purple;
+    padding: 5rem;
+    max-width: 30rem;
+    outline: none;
+    text-align: center;
+    border-radius: 20px;
+    box-shadow: 0px 5px 5px darken($darkest-purple, 10%);
+}
+
+.modal__title {
+    margin: 0 0 $l-size 0;
+    color: $lightest-purple;
+}
+
+.modal__error {
+    font-style: italic;
+    color: $message-red;
+}
+
+.modal__info {
+    color: $text-purple;
+}

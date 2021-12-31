@@ -1,0 +1,11 @@
+.send-message {
+    bottom: 0;
+    padding: $m-size;
+    padding-top: 0;
+    background: $background-purple;
+}
+
+.send-message__form {
+    width: 100%;
+    display: flex;
+}

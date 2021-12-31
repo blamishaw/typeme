@@ -15,11 +15,11 @@ const LoginModal = ({ setDisplayName }) => {
         if (typeof serverMessage.type === 'string'){
             
             if (serverMessage.type === 'USER_ACCEPT') {
-                setDisplayName(serverMessage.message);
                 setModalIsOpen(false);
+                setDisplayName(serverMessage.message);
             }
             if (serverMessage.type === 'USER_REJECT'){
-                setErr('Display name is already in use.');
+                setErr(`Display name "${serverMessage.message}" is already in use.`);
             }
         }
         return () => clearTimeout(serverResponseTimer);
@@ -48,22 +48,25 @@ const LoginModal = ({ setDisplayName }) => {
         e.preventDefault();
         const inputText = e.target[0].value;
         const displayName = inputText.trim();
-        if (!isValidDisplayName(displayName)) {
-            e.target[0].value = '';
-        } else {
+        if (isValidDisplayName(displayName)) {
             // Check if display name is in active use
             sendMessage('USER_CONNECT', { displayName });
             serverResponseTimer = setTimeout(() => console.log('Server unresponsive.'), 3000);
         }
+        e.target[0].value = '';
     }
 
     return (
         <Modal
             isOpen={modalIsOpen}
+            className="modal"
         >
             <form autoComplete='off' autoCapitalize='off' onSubmit={handleSubmitForm}>
-                <h3>{err || "Display names must be 13 characters or less"}</h3>
-                <input autoComplete='off' placeholder='Enter display name'></input>
+                <h1 className="modal__title">typeme.</h1>
+                <input className="typeme-input" autoComplete='off' placeholder='Enter display name'></input>
+                <button className="typeme-button">Submit</button>
+                <h3 className="modal__info">Display names must be 13 characters or less</h3>
+                <h4 className="modal__error">{err}</h4>
             </form>
         </Modal>
     );

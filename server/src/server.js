@@ -55,21 +55,30 @@ const handleMessage = (connection, type, message) => {
             // Check if display name is already taken
             if (!Object.values(activeDisplayNames).includes(message.displayName)) {
                 activeDisplayNames[connection.id] = message.displayName;
-                connection.sendUTF(JSON.stringify({ type: 'USER_ACCEPT', message: message.displayName }));
+                sendUTFMessage(connection, 'USER_ACCEPT', message.displayName);
             } else {
-                connection.sendUTF(JSON.stringify({ type: 'USER_REJECT', message: message.displayName }));
+                sendUTFMessage(connection, 'USER_REJECT', message.displayName);
             }
             break;
         case 'MESSAGE':
             // Broadcast received message to all currently active clients
             console.log(`Received ${type} message from "${message.from}" with content "${message.content}"`);
             for (let client of Object.values(clients)) {
-                client.send(JSON.stringify({ type, message }));
+                sendUTFMessage(client, type, message);
             }
             break;
         default:
             break;
     }
+}
+
+const sendUTFMessage = (connection, type, message) => {
+    connection.sendUTF(JSON.stringify(
+        {
+            type,
+            message
+        }
+    ))
 }
 
 

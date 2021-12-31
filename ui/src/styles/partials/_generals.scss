@@ -1,0 +1,39 @@
+.typeme-form {
+    width: 100%;
+    display: flex;
+}
+
+.typeme-button {
+    border: none;
+    margin: $s-size; 
+    font-size: 1rem;
+    margin-left: 0;
+    top: 0; 
+    padding: $s-size;
+    padding-top: 1.5rem;
+    background: darken($dark-purple, 4%);
+    color: lighten($lightest-purple, 10%);
+    border-radius: 0 10px 10px 0;
+    border-bottom: 0.3rem solid darken($dark-purple, 10%);
+}
+
+.typeme-input {
+    border: none;
+    padding: $s-size;
+    background: $lightest-purple;
+    margin: $s-size; 
+    margin-right: 0;
+    flex-grow: 0.5;
+    border-bottom: 0.3rem solid darken($dark-purple, 10%);
+    border-radius: 10px 0 0 10px;
+    color: $dark-purple;
+    font-size: $s-size
+}
+
+.typeme-input:focus {
+    outline: none;
+}
+
+.typeme-input::placeholder {
+    color: lighten($background-purple, 20%);
+}

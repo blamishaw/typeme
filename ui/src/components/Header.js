@@ -5,8 +5,13 @@ const Header = () => {
     const { displayName } = useContext(WebSocketContext);
 
     return (
-        <header>
-            <h1>Send messages as {displayName}</h1>
+        <header className="header-container header">
+            <h1 className="header__title">typeme.</h1>
+            {displayName && 
+                <h3 className="header__subtitle">
+                    Typing as <b className="header__display-name">{displayName}</b>
+                </h3>
+            }
         </header>
     );
 }

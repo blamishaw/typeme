@@ -1,0 +1,82 @@
+.messages-wrapper {
+    background-color: $background-purple;
+    max-height: 72vh;
+    overflow: scroll;
+    padding: 0 0;
+    justify-content: space-between;
+    z-index: 1;
+}
+
+.messages {
+    padding: $xl-size $s-size;
+    flex-shrink: 2;
+    margin-top: $xxs-size;
+}
+
+.message {
+    padding: $xs-size;
+    border-radius: 15px;
+    margin-bottom: $xxs-size;
+    width: fit-content;
+    max-width: 66%;
+    bottom: 0;
+}
+
+.self {
+    background: $self-message-color;
+    margin: 1rem 1rem 1rem auto ;
+    box-shadow: 8px 8px 2px rgba($self-message-color, 0.35);
+    text-align: left;
+}
+
+.other-1 {
+    background: nth($message-colors, 1);
+    box-shadow: -8px 8px 2px rgba(nth($message-colors, 1), 0.35);
+    align-items: flex-end;
+}
+
+.other-2 {
+    background: nth($message-colors, 2);
+    box-shadow: -8px 8px 2px rgba(nth($message-colors, 2), 0.35);
+    align-items: flex-end;
+}
+
+.other-3 {
+    background: nth($message-colors, 3);
+    box-shadow: -8px 8px 2px rgba(nth($message-colors, 3), 0.35);
+    align-items: flex-end;
+}
+
+.other-4 {
+    background: nth($message-colors, 4);
+    box-shadow: -8px 8px 2px rgba(nth($message-colors, 4), 0.35);
+    align-items: flex-end;
+}
+
+.other-5 {
+    background: nth($message-colors, 5);
+    box-shadow: -8px 8px 2px rgba(nth($message-colors, 5), 0.35);
+    align-items: flex-end;
+}
+
+.other-6 {
+    background: nth($message-colors, 6);
+    box-shadow: -8px 8px 2px rgba(nth($message-colors, 6), 0.35);
+    align-items: flex-end;
+}
+
+
+.message__content {
+    margin: $xs-size;
+    color: white;
+    font-size: $s-size;
+    overflow-wrap: break-word;
+    font-size: 1rem;
+    font-weight: 300;
+}
+
+.message__from {
+    font-style: italic;
+    color: $lightest-purple;
+    font-size: $s-size;
+}

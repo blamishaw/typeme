@@ -1,0 +1,24 @@
+.header {
+    padding: $m-size;
+    background-color: $dark-purple;
+    box-shadow: 0px 5px 5px darken($darkest-purple, 10%);
+    display: inline;
+    z-index: 2;
+}
+
+.header__title {
+    color: $lightest-purple;
+    font-size: $xl-size;
+    float: left;
+}
+
+.header__subtitle {
+    color: $text-purple;
+    float: right;
+    margin: $xl-size $l-size $m-size $m-size
+}
+
+.header__display-name {
+    font-size: $m-size;
+    color: rgb(251, 251, 182);
+}

@@ -21,16 +21,18 @@ const App = () => {
         sendWSMessage(ws, type, message);
     }
 
+    if (ws.current && ws.current.readyState === 3) {
+        return <h1>Cannot connect to server</h1>
+    }
     return (
         <WebSocketContext.Provider value={{ displayName, sendMessage, serverMessage }}>
             <LoginModal setDisplayName={setDisplayName}/>
-            {displayName && 
-                <>
-                    <Header />
-                    <Messages />
-                    <SendMessage />
-                </>
-            }
+            <div className="grid-container">
+                <Header />
+                <Messages />
+                <SendMessage />
+            </div>
+            
         </WebSocketContext.Provider>
     );
 }
