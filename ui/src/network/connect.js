@@ -7,7 +7,7 @@ const PORT = 8080;
 // On socket close, we attempt to reconnect to the server with an exponential backoff
 let attemptedConnects = 1;
 export const connect = (ws, setServerMessage) => {
-    ws.current = new W3CWebSocket(`ws://${window.location.hostname}:${PORT}`);
+    ws.current = new W3CWebSocket(`ws://localhost:${PORT}`);
 
     ws.current.onopen = () => {
         console.log('WebSocket Client Connected');

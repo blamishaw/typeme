@@ -1,6 +1,9 @@
 .idea/
 .vscode/
 node_modules/
+*.pem
+env/
+.env
 build
 .DS_Store
 *.tgz

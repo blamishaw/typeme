@@ -1,0 +1,18 @@
+version: '1'
+services:
+  ui:
+    image: typemeacr.azurecr.io/typme_ui:latest
+    build:
+      context: ./ui
+      dockerfile: Dockerfile.prod
+    ports:
+      - '80:80'
+    depends_on:
+      - server
+  server:
+    image: typemeacr.azurecr.io/typeme_server:latest
+    build: 
+      context: './server'
+      dockerfile: Dockerfile.prod
+    ports:
+      - '8080:8080'

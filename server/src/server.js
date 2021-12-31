@@ -1,7 +1,7 @@
 const WebSocketServer = require('websocket').server;
 const http = require('http');
 const uuid = require('uuid');
-const port = process.env.port || 8080;
+const port = 8080;
 
 // Create http server and listen on designated port
 const server = http.createServer((req, res) => {
