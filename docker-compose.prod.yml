@@ -1,7 +1,7 @@
 version: '1'
 services:
   ui:
-    image: typemeacr.azurecr.io/typme_ui:latest
+    image: typemeacr.azurecr.io/typeme_ui:latest
     build:
       context: ./ui
       dockerfile: Dockerfile.prod

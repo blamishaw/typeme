@@ -1,15 +1,23 @@
 const WebSocketServer = require('websocket').server;
-const http = require('http');
+// const http = require('http');
+const https = require('https');
+const fs = require('fs');
+const path = require('path');
 const uuid = require('uuid');
-const port = 8080;
+const port = process.env.port || 8080;
+
+const options = {
+    key: fs.readFileSync(path.resolve(__dirname, '../env/key.pem')),
+    cert: fs.readFileSync(path.resolve(__dirname, '../env/cert.pem'))
+}
 
 // Create http server and listen on designated port
-const server = http.createServer((req, res) => {
+const server = https.createServer(options, (req, res) => {
     console.log((new Date()) + ' Received request for ' + req.url);
 })
 
 server.listen(port, () => {
-    console.log("Server is now listening on port " + port);
+    console.log("HTTP server is now listening on port " + port);
 })
 
 // Create new websocket server mounted on http server
@@ -74,11 +82,11 @@ const handleMessage = (connection, type, message) => {
 
 const broadcastUTFMessage = (type, message) => {
     console.log(`Sending broadcast of type ${type} with message ${message}`);
-    for (let client of Object.values(clients)){
+    Object.values(clients).forEach(client => {
         if (client.id in activeDisplayNames){
             sendUTFMessage(client, type, message);
         }
-    }
+    });
 }
 
 const sendUTFMessage = (connection, type, message) => {
