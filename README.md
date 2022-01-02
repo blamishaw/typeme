@@ -8,3 +8,7 @@ I built this app with the intention of understanding certain technologies, namel
 2. React functional components and hooks (useContext, useEffect, etc.)
 <br>
 3. Dockerizing a full-stack application and deploying to the cloud
+
+## Demo
+
+![demo](https://tmvideostore.blob.core.windows.net/videos/demo.mov)

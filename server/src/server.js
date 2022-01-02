@@ -50,8 +50,11 @@ wsServer.on('request', (request) => {
     // On close event, remove the connection from the list of current clients
     connection.on('close', (reasonCode, description) => {
         delete clients[connection.id];
-        broadcastUTFMessage('USER_CTX_MSG', { from: activeDisplayNames[connection.id], content: 'disconnect' });
-        delete activeDisplayNames[connection.id];
+        if (connection.id in activeDisplayNames) {
+            broadcastUTFMessage('USER_CTX_MSG', { from: activeDisplayNames[connection.id], content: 'disconnect' });
+            delete activeDisplayNames[connection.id];
+        }
+        
         console.log((new Date()) + `Connection ${connection.id} disconnected. Active clients ${Object.keys(clients).length}`);
     });
 })
