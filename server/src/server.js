@@ -3,6 +3,8 @@ const http = require('http');
 const uuid = require('uuid');
 const port = process.env.PORT || 8080;
 
+const MAX_CONNECTIONS = 2;
+
 // Create http server and listen on designated port
 const server = http.createServer((req, res) => {
     console.log((new Date()) + ' Received request for ' + req.url);
@@ -25,6 +27,13 @@ let activeDisplayNames = {};
 wsServer.on('request', (request) => {
     // Currently accepting connection from all origins, but in the future perhaps restrict?
     const connection = request.accept(null, request.origin);
+
+    if (Object.keys(clients).length === MAX_CONNECTIONS) {
+        console.log("Rejecting connection");
+        sendUTFMessage(connection, 'REQ_DENIED', 'Chatroom is full');
+        connection.close();
+    }
+    
 
     // Create unique id for connection and add it to list of clients
     connection.id = uuid.v4();

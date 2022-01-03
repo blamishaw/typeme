@@ -14,6 +14,9 @@ const LoginModal = ({ setDisplayName }) => {
     useEffect(() => {
         if (typeof serverMessage.type === 'string'){
             
+            if (serverMessage.type === 'REQ_DENIED') {
+                setErr(serverMessage.message);
+            }
             if (serverMessage.type === 'USER_ACCEPT') {
                 setModalIsOpen(false);
                 setDisplayName(serverMessage.message);
