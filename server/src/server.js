@@ -1,26 +1,15 @@
 const WebSocketServer = require('websocket').server;
-// const http = require('http');
-const https = require('https');
-const fs = require('fs');
-const path = require('path');
+const http = require('http');
 const uuid = require('uuid');
-const port = process.env.port || 8080;
-
-// Local HTTPS server uses self-generated key and self-signed certificate
-// This doesn't work in deployment
-// TODO: Figure out how to bootstrap cloud platform certificate in deployment
-const options = {
-    key: fs.readFileSync(path.resolve(__dirname, '../env/key.pem')),
-    cert: fs.readFileSync(path.resolve(__dirname, '../env/cert.pem'))
-}
+const port = process.env.PORT || 8080;
 
 // Create http server and listen on designated port
-const server = https.createServer(options, (req, res) => {
+const server = http.createServer((req, res) => {
     console.log((new Date()) + ' Received request for ' + req.url);
 })
 
 server.listen(port, () => {
-    console.log("HTTPS server is now listening on port " + port);
+    console.log("HTTP server is now listening on port " + port);
 })
 
 // Create new websocket server mounted on http server
@@ -82,6 +71,7 @@ const handleMessage = (connection, type, message) => {
             broadcastUTFMessage(type, message);
             break;
         default:
+            console.log(`Received ${type} with message payload ${message}`);
             break;
     }
 }

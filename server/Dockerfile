@@ -4,6 +4,6 @@ ENV PATH /app/node_modules/.bin:$PATH
 COPY package.json /app/package.json
 RUN npm install --silent
 COPY . /app
-EXPOSE 8080
+EXPOSE $PORT
 CMD ["npm", "start"]
 
