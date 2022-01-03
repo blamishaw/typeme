@@ -6,6 +6,9 @@ const path = require('path');
 const uuid = require('uuid');
 const port = process.env.port || 8080;
 
+// Local HTTPS server uses self-generated key and self-signed certificate
+// This doesn't work in deployment
+// TODO: Figure out how to bootstrap cloud platform certificate in deployment
 const options = {
     key: fs.readFileSync(path.resolve(__dirname, '../env/key.pem')),
     cert: fs.readFileSync(path.resolve(__dirname, '../env/cert.pem'))
@@ -17,7 +20,7 @@ const server = https.createServer(options, (req, res) => {
 })
 
 server.listen(port, () => {
-    console.log("HTTP server is now listening on port " + port);
+    console.log("HTTPS server is now listening on port " + port);
 })
 
 // Create new websocket server mounted on http server

@@ -1,8 +1,10 @@
 import React, { useContext } from 'react';
 import { WebSocketContext } from '../network/WebSocketContext';
+import { useIsMobile } from '../hooks/useIsMobile'; 
 
 const SendMessage = () => {
     const { displayName, sendMessage } = useContext(WebSocketContext);
+    const isMobile = useIsMobile();
 
     const handleSendMessage = (e) => {
         e.preventDefault();
@@ -20,10 +22,10 @@ const SendMessage = () => {
                 <input 
                     autoComplete='off' 
                     placeholder='Your message here'
-                    className='typeme-input'
+                    className={`typeme-input ${isMobile ? 'typeme-input-rounded' : ''}`}
                 >    
                 </input>
-                <button className='typeme-button'>Send</button>
+                {!isMobile && <button className='typeme-button'>Send</button>}
             </form>
         </div>
     );

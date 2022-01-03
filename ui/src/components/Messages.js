@@ -25,7 +25,6 @@ const Messages = () => {
             }
             // If we receive a user 'connect' or 'disconnect' message
             if (serverMessage.type === 'USER_CTX_MSG') {
-                console.log("received ctx message");
                 setMessages(prevMessages => [...prevMessages, serverMessage.message]);
             }
         }

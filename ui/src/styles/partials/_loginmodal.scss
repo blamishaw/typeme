@@ -36,9 +36,12 @@
     color: $text-purple;
 }
 
-// @media (max-width: $mobile-breakpoint) {
-//     .modal {
-//         height: 100vh;
-//         width: 100vw;
-//     }
-// }
+@media (max-width: $mobile-breakpoint) {
+    .ReactModalPortal .ReactModal__Content {
+        padding: $l-size;
+    }
+
+    .ReactModalPortal .ReactModal__Overlay {
+        overflow: hidden;
+    }
+}

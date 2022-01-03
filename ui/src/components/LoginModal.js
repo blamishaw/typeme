@@ -61,13 +61,13 @@ const LoginModal = ({ setDisplayName }) => {
             isOpen={modalIsOpen}
             className="modal"
         >
-            <form autoComplete='off' autoCapitalize='off' onSubmit={handleSubmitForm}>
-                <h1 className="modal__title">typeme.</h1>
+            <h1 className="modal__title">typeme.</h1>
+            <form autoComplete='off' autoCapitalize='off' onSubmit={handleSubmitForm} className='typeme-form'>
                 <input className="typeme-input" autoComplete='off' placeholder='Enter display name'></input>
                 <button className="typeme-button">Submit</button>
-                <h3 className="modal__info">Display names must be 13 characters or less</h3>
-                <h4 className="modal__error">{err}</h4>
             </form>
+            <h3 className="modal__info">Display names must be 13 characters or less</h3>
+            <h4 className="modal__error">{err}</h4>
         </Modal>
     );
 }

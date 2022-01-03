@@ -10,3 +10,10 @@
     display: flex;
     margin: 0 auto;
 }
+
+@media (max-width: $mobile-breakpoint) {
+    .send-message__form {
+        display: block;
+        margin: 0 1rem;
+    }
+}

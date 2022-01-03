@@ -30,10 +30,21 @@
     font-size: $s-size
 }
 
+.typeme-input-rounded {
+    border-radius: 30px;
+    
+}
+
 .typeme-input:focus {
     outline: none;
 }
 
 .typeme-input::placeholder {
     color: lighten($background-purple, 20%);
+}
+
+@media (max-width: $mobile-breakpoint) {
+    .typeme-form {
+        padding: 0;
+    }
 }
