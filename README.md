@@ -11,4 +11,4 @@ I built this app with the intention of understanding certain technologies, namel
 
 ## Demo
 
-![demo](https://tmvideostore.blob.core.windows.net/videos/demo.mov)
+Watch here: https://tmvideostore.blob.core.windows.net/videos/demo.mov
