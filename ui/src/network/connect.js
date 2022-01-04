@@ -36,17 +36,21 @@ export const connect = (ws, setServerMessage) => {
 
 // Send message to server
 export const sendWSMessage = (ws, type, message) => {
-    ws.current.send(JSON.stringify({
-        type,
-        message
-    }));
+    if (ws.current.readyState === 1) {
+        ws.current.send(JSON.stringify({
+            type,
+            message
+        }));
+    } else {
+        console.log("Websocket ready state ", ws.current.readyState);
+    }
+    
 }
 
 // Run callback if serverMessage contains the type specified
 export const processServerMessage = (type, serverMessage, callback) => {
     if (typeof serverMessage.type === 'string') {
         if (serverMessage.type === type) {
-            console.log("Running callback");
             callback();
         }
     }

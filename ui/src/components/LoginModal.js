@@ -13,12 +13,15 @@ const LoginModal = ({ setDisplayName }) => {
     let serverResponseTimer;
 
     useEffect(() => {
-        processServerMessage('USER_ACCEPT', serverMessage, () => {
-            setModalIsOpen(false);
-            setDisplayName(serverMessage.message);
+        processServerMessage('CTX_REJECT', serverMessage, () => {
+            setErr(`Chatroom is full. Refresh browser to keep trying.`);
         });
         processServerMessage('USER_REJECT', serverMessage, () => {
             setErr(`Display name "${serverMessage.message}" is already in use.`);
+        });
+        processServerMessage('USER_ACCEPT', serverMessage, () => {
+            setModalIsOpen(false);
+            setDisplayName(serverMessage.message);
         });
         return () => clearTimeout(serverResponseTimer);
     }, [serverMessage])
@@ -49,7 +52,7 @@ const LoginModal = ({ setDisplayName }) => {
         if (isValidDisplayName(displayName)) {
             // Check if display name is in active use
             sendMessage('USER_CONNECT', { displayName });
-            serverResponseTimer = setTimeout(() => console.log('Server unresponsive.'), 3000);
+            serverResponseTimer = setTimeout(() => setErr('Server unresponsive.'), 500);
         }
         e.target[0].value = '';
     }

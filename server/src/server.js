@@ -3,7 +3,7 @@ const http = require('http');
 const uuid = require('uuid');
 const port = process.env.PORT || 8080;
 
-const MAX_CONNECTIONS = 2;
+const MAX_CONNECTIONS = 8;
 
 // Create http server and listen on designated port
 const server = http.createServer((req, res) => {
@@ -20,41 +20,40 @@ wsServer = new WebSocketServer({
     autoAcceptConnections: false
 });
 
-let clients = {};
+
 let activeDisplayNames = {};
 
 // Handle websocket server request event
 wsServer.on('request', (request) => {
     // Currently accepting connection from all origins, but in the future perhaps restrict?
     const connection = request.accept(null, request.origin);
-
-    // if (Object.keys(clients).length === MAX_CONNECTIONS) {
-    //     sendUTFMessage(connection, )
-    //     return;
-    // }
-
     // Create unique id for connection and add it to list of clients
     connection.id = uuid.v4();
-    clients[connection.id] = connection;
-    console.log((new Date()) + ` Connection ${connection.id} accepted. Active clients ${Object.keys(clients).length}`);
+    console.log((new Date()) + ` Connection ${connection.id} accepted.\nActive clients ${getActiveClients()}`); 
     
+    // Send connection reject if more than MAX_CONNECTIONS are in the chatroom
+    // This is mostly to avoid the problems (race-conditions) that occurs with many users
+    if (getActiveClients() > MAX_CONNECTIONS) {
+        console.log('Rejecting connection as chatroom is full');
+        sendUTFMessage(connection, 'CTX_REJECT', 'Chatroom is full');
+        connection.close();
+        return;
+    }
 
-    connection.on('message', (data) => {
-        if (data.type === 'utf8') {
-            const data = JSON.parse(data.utf8Data);
+    connection.on('message', (message) => {
+        if (message.type === 'utf8') {
+            const data = JSON.parse(message.utf8Data);
             handleMessage(connection, data);
         }
     });
 
     // On close event, remove the connection from the list of current clients
     connection.on('close', (reasonCode, description) => {
-        delete clients[connection.id];
         if (connection.id in activeDisplayNames) {
             broadcastUTFMessage('USER_CTX_MSG', { from: activeDisplayNames[connection.id], content: 'disconnect' });
             delete activeDisplayNames[connection.id];
         }
-        
-        console.log((new Date()) + `Connection ${connection.id} disconnected. Active clients ${Object.keys(clients).length}`);
+        console.log((new Date()) + `Connection ${connection.id} disconnected.\nActive clients ${getActiveClients()}`);
     });
 })
 
@@ -79,14 +78,14 @@ const handleMessage = (connection, data) => {
             broadcastUTFMessage(type, message);
             break;
         default:
-            console.log(`Received ${type} with message payload ${message}`);
+            console.log(`Received ${type} with message %j`, message);
             break;
     }
 }
 
 const broadcastUTFMessage = (type, message) => {
-    console.log(`Sending broadcast of type ${type} with message ${message}`);
-    Object.values(clients).forEach(client => {
+    console.log(`Sending broadcast of type ${type} with message %j`, message);
+    wsServer.connections.forEach(client => {
         if (client.id in activeDisplayNames){
             sendUTFMessage(client, type, message);
         }
@@ -100,6 +99,10 @@ const sendUTFMessage = (connection, type, message) => {
             message
         }
     ))
+}
+
+const getActiveClients = () => {
+    return wsServer.connections.length;
 }
 
 

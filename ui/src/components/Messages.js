@@ -24,8 +24,11 @@ const Messages = () => {
             getMessageColor(serverMessage.message.from);
         });
         // If we receive a user 'connect' or 'disconnect' message
-        processServerMessage('USER_CTX_MESSAGE', serverMessage, () => {
-            setMessages(prevMessages => [...prevMessages, serverMessage.message]);
+        processServerMessage('USER_CTX_MSG', serverMessage, () => {
+            // Don't display our own connection message
+            if (serverMessage.message.from !== displayName) {
+                setMessages(prevMessages => [...prevMessages, serverMessage.message]);
+            }
         });
     }, [serverMessage])
 
