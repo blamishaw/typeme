@@ -28,12 +28,10 @@ wsServer.on('request', (request) => {
     // Currently accepting connection from all origins, but in the future perhaps restrict?
     const connection = request.accept(null, request.origin);
 
-    if (Object.keys(clients).length === MAX_CONNECTIONS) {
-        console.log("Rejecting connection");
-        sendUTFMessage(connection, 'REQ_DENIED', 'Chatroom is full');
-        connection.close();
-    }
-    
+    // if (Object.keys(clients).length === MAX_CONNECTIONS) {
+    //     sendUTFMessage(connection, )
+    //     return;
+    // }
 
     // Create unique id for connection and add it to list of clients
     connection.id = uuid.v4();
@@ -43,8 +41,8 @@ wsServer.on('request', (request) => {
 
     connection.on('message', (data) => {
         if (data.type === 'utf8') {
-            const { type, message } = JSON.parse(data.utf8Data);
-            handleMessage(connection, type, message);
+            const data = JSON.parse(data.utf8Data);
+            handleMessage(connection, data);
         }
     });
 
@@ -61,7 +59,8 @@ wsServer.on('request', (request) => {
 })
 
 // Util functions
-const handleMessage = (connection, type, message) => {
+const handleMessage = (connection, data) => {
+    const { type, message } = data;
     switch (type) {
         case 'USER_CONNECT':
             console.log(`Received ${type} message to reserve display name "${message.displayName}" for id: ${connection.id}`);

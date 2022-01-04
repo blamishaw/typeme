@@ -27,7 +27,7 @@ export const connect = (ws, setServerMessage) => {
 
     ws.current.onerror = (err) => {
         // If we cannot connect to the websocket, try an exponential timeout
-        console.log("Websocket encountered error");
+        console.log(err, "Websocket encountered error");
         ws.current.close();
     }
 
@@ -40,4 +40,14 @@ export const sendWSMessage = (ws, type, message) => {
         type,
         message
     }));
+}
+
+// Run callback if serverMessage contains the type specified
+export const processServerMessage = (type, serverMessage, callback) => {
+    if (typeof serverMessage.type === 'string') {
+        if (serverMessage.type === type) {
+            console.log("Running callback");
+            callback();
+        }
+    }
 }

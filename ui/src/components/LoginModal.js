@@ -1,6 +1,7 @@
 import React, { useState, useContext, useEffect } from 'react';
 import Modal from 'react-modal';
 import { WebSocketContext } from '../network/WebSocketContext';
+import { processServerMessage } from '../network/connect';
 
 Modal.setAppElement('#root');
 
@@ -12,19 +13,13 @@ const LoginModal = ({ setDisplayName }) => {
     let serverResponseTimer;
 
     useEffect(() => {
-        if (typeof serverMessage.type === 'string'){
-            
-            if (serverMessage.type === 'REQ_DENIED') {
-                setErr(serverMessage.message);
-            }
-            if (serverMessage.type === 'USER_ACCEPT') {
-                setModalIsOpen(false);
-                setDisplayName(serverMessage.message);
-            }
-            if (serverMessage.type === 'USER_REJECT'){
-                setErr(`Display name "${serverMessage.message}" is already in use.`);
-            }
-        }
+        processServerMessage('USER_ACCEPT', serverMessage, () => {
+            setModalIsOpen(false);
+            setDisplayName(serverMessage.message);
+        });
+        processServerMessage('USER_REJECT', serverMessage, () => {
+            setErr(`Display name "${serverMessage.message}" is already in use.`);
+        });
         return () => clearTimeout(serverResponseTimer);
     }, [serverMessage])
 
@@ -64,7 +59,7 @@ const LoginModal = ({ setDisplayName }) => {
             isOpen={modalIsOpen}
             className="modal"
         >
-            <h1 className="modal__title">typeme.</h1>
+            <h1 className="modal__title">typeme.io</h1>
             <form autoComplete='off' autoCapitalize='off' onSubmit={handleSubmitForm} className='typeme-form'>
                 <input className="typeme-input" autoComplete='off' placeholder='Enter display name'></input>
                 <button className="typeme-button">Submit</button>
@@ -74,5 +69,6 @@ const LoginModal = ({ setDisplayName }) => {
         </Modal>
     );
 }
+
 
 export default LoginModal;

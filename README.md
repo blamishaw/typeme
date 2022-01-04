@@ -1,4 +1,6 @@
-# typeme.
+# typeme.io
+[Join the Chat!](http://www.typeme.io)
+
 ### An instant-messaging chat app build using Node.js and React
 <br>
 I built this app with the intention of understanding certain technologies, namely:

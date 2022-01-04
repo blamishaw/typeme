@@ -1,5 +1,6 @@
 import React, { useState, useEffect, useContext } from 'react';
 import { WebSocketContext } from '../network/WebSocketContext';
+import { processServerMessage } from '../network/connect';
 import Message from './Message';
 
 const NUM_MESSAGE_COLORS = 6;
@@ -17,17 +18,15 @@ const Messages = () => {
     const [idx, setIdx] = useState(1);
 
     useEffect(() => {
-        if (typeof serverMessage.type === 'string') {
-            // If we receive a textual message
-            if (serverMessage.type === 'MESSAGE') {
-                setMessages(prevMessages => [...prevMessages, serverMessage.message]);
-                getMessageColor(serverMessage.message.from);
-            }
-            // If we receive a user 'connect' or 'disconnect' message
-            if (serverMessage.type === 'USER_CTX_MSG') {
-                setMessages(prevMessages => [...prevMessages, serverMessage.message]);
-            }
-        }
+        // If we receive a textual message
+        processServerMessage('MESSAGE', serverMessage, () => {
+            setMessages(prevMessages => [...prevMessages, serverMessage.message]);
+            getMessageColor(serverMessage.message.from);
+        });
+        // If we receive a user 'connect' or 'disconnect' message
+        processServerMessage('USER_CTX_MESSAGE', serverMessage, () => {
+            setMessages(prevMessages => [...prevMessages, serverMessage.message]);
+        });
     }, [serverMessage])
 
     let messagesEnd = undefined;
