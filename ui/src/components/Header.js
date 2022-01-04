@@ -8,7 +8,7 @@ const Header = () => {
 
     return (
         <header className="header-container header">
-            <h1 className="header__title">{isMobile ? "tm." : "typeme."}</h1>
+            <h1 className="header__title">{isMobile ? "tm." : "typeme.io"}</h1>
             {displayName && 
                 <h3 className="header__subtitle">
                     Typing as <b className="header__display-name">{displayName}</b>
