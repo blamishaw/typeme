@@ -1,19 +1,33 @@
 .send-message {
     bottom: 0;
     padding: $m-size;
-    padding-top: 0;
+    // padding-top: 0;
     background: $background-purple;
 }
 
 .send-message__form {
-    width: 60%;
+    // width: 60%;
     display: flex;
-    margin: 0 auto;
+    margin: 0;
+    overflow: hidden;
 }
 
 @media (max-width: $mobile-breakpoint) {
     .send-message__form {
-        display: block;
-        margin: 0 1rem;
+        margin: 0;
+        
+    }
+
+    .send-message__input {
+        margin: $xxs-size;
+        border-radius: 30px;
+        padding: 0.8rem $s-size;
+        font-size: 1rem;
+    }
+
+    .send-message__button {
+        border-radius: 100%;
+        margin: 0 0 0 0.4rem;
+        padding: 1rem;
     }
 }

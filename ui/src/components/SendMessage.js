@@ -22,10 +22,10 @@ const SendMessage = () => {
                 <input 
                     autoComplete='off' 
                     placeholder='Your message here'
-                    className={`typeme-input ${isMobile ? 'typeme-input-rounded' : ''}`}
+                    className='typeme-input send-message__input'
                 >    
                 </input>
-                {!isMobile && <button className='typeme-button'>Send</button>}
+                <button className='typeme-button send-message__button'>{isMobile ? "–>" : "Send"}</button>
             </form>
         </div>
     );

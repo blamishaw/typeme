@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react';
 
 // Custom hook to determine if our browser size fits the specs of a mobile browser
-const MOBILE_WIDTH = 450;
+const MOBILE_WIDTH = 500;
 const MOBILE_HEIGHT = 950;
 
 export const useIsMobile = () => {

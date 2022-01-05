@@ -1,6 +1,7 @@
 import React, { useState, useEffect, useRef } from "react";
 import { WebSocketContext } from "../network/WebSocketContext";
 import { connect, sendWSMessage } from "../network/connect";
+import Error from './Error';
 import LoginModal from "./LoginModal";
 import Header from "./Header";
 import Messages from "./Messages";
@@ -11,18 +12,19 @@ const App = () => {
 
     const ws = useRef(null);
     const [serverMessage, setServerMessage] = useState({});
+    const [readyState, setReadyState] = useState(0);
     const [displayName, setDisplayName] = useState('');
 
     useEffect(() => {
-        return connect(ws, setServerMessage);
+        return connect(ws, setServerMessage, setReadyState);
     }, [])
 
     const sendMessage = (type, message) => {
         sendWSMessage(ws, type, message);
     }
 
-    if (ws.current && ws.current.readyState === 3) {
-        return <h1>Cannot connect to server</h1>
+    if (readyState === 3) {
+        return <Error errorMessage={"Cannot connect to server"}/>
     }
     return (
         <WebSocketContext.Provider value={{ displayName, sendMessage, serverMessage }}>

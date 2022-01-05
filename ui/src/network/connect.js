@@ -1,15 +1,17 @@
 import { w3cwebsocket as W3CWebSocket } from 'websocket';
 
-const MAX_RECONNECT_SCALE = 5;
+const MAX_RECONNECT_ATTEMPTS = 5;
 
 // Client websocket connection function
 // On socket close, we attempt to reconnect to the server with an exponential backoff
-let attemptedConnects = 1;
-export const connect = (ws, setServerMessage) => {
+let missedHeartBeats = 0;
+export const connect = (ws, setServerMessage, setReadyState) => {
     ws.current = new W3CWebSocket(process.env.REACT_APP_DEV_HOSTNAME);
 
     ws.current.onopen = () => {
-        console.log('WebSocket Client Connected');
+        console.log('Client Connected');
+        setReadyState(ws.current.readyState);
+        missedHeartBeats = 0;
     }
 
     ws.current.onmessage = (e) => {
@@ -19,15 +21,24 @@ export const connect = (ws, setServerMessage) => {
 
     ws.current.onclose = () => {
         console.log("Websocket closed. Attempting to reconnect...");
-        setTimeout(() => {
-            connect(ws);
-            attemptedConnects = Math.min(MAX_RECONNECT_SCALE, attemptedConnects+1);
-        }, Math.pow(10, attemptedConnects));
+        setReadyState(ws.current.readyState);
+        try {
+            if (missedHeartBeats < MAX_RECONNECT_ATTEMPTS) {
+                setTimeout(() => {
+                    missedHeartBeats++;
+                    connect(ws, setServerMessage, setReadyState);
+                }, Math.pow(10, missedHeartBeats));
+            } else {
+                throw new Error("Missed too many heartbeats, reconnect failed.")
+            }
+        } catch(e) {
+            console.warn(e);
+        }
     }
 
     ws.current.onerror = (err) => {
         // If we cannot connect to the websocket, try an exponential timeout
-        console.log(err, "Websocket encountered error");
+        console.log("Websocket encountered error");
         ws.current.close();
     }
 
@@ -36,15 +47,14 @@ export const connect = (ws, setServerMessage) => {
 
 // Send message to server
 export const sendWSMessage = (ws, type, message) => {
-    if (ws.current.readyState === 1) {
+    try {
         ws.current.send(JSON.stringify({
             type,
             message
         }));
-    } else {
-        console.log("Websocket ready state ", ws.current.readyState);
+    } catch(e) {
+        throw new Error("Message failed to send.");
     }
-    
 }
 
 // Run callback if serverMessage contains the type specified

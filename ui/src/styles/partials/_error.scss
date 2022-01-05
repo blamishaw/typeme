@@ -1,0 +1,16 @@
+.error__container {
+    height: auto !important;
+    min-height: 92.5vh;
+    overflow: hidden;
+    padding: $l-size;
+    background-color: $background-purple;
+    
+}
+
+.error__message {
+    padding: 20%;
+    font-style: italic;
+    font-size: $l-size;
+    color: $text-purple;
+    text-align: center;
+}

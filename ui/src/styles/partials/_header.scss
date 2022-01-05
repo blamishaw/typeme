@@ -25,7 +25,12 @@
 
 @media (max-width: $mobile-breakpoint) {
     .header {
-        padding-bottom: $xs-size;
+        padding-bottom: $m-size;
+        height: 8vh;
+    }
+
+    .header__subtitle {
+        margin-right: $xs-size;
     }
     
 }

@@ -43,9 +43,11 @@ wsServer.on('request', (request) => {
     connection.on('message', (message) => {
         if (message.type === 'utf8') {
             const data = JSON.parse(message.utf8Data);
+            
             handleMessage(connection, data);
         }
     });
+
 
     // On close event, remove the connection from the list of current clients
     connection.on('close', (reasonCode, description) => {
