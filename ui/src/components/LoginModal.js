@@ -10,7 +10,6 @@ const LoginModal = ({ setDisplayName }) => {
 
     const [modalIsOpen, setModalIsOpen] = useState(true);
     const [err, setErr] = useState('');
-    let serverResponseTimer;
 
     useEffect(() => {
         processServerMessage('CTX_REJECT', serverMessage, () => {
@@ -23,7 +22,6 @@ const LoginModal = ({ setDisplayName }) => {
             setModalIsOpen(false);
             setDisplayName(serverMessage.message);
         });
-        return () => clearTimeout(serverResponseTimer);
     }, [serverMessage])
 
     const isValidDisplayName = (displayName) => {
@@ -52,7 +50,6 @@ const LoginModal = ({ setDisplayName }) => {
         if (isValidDisplayName(displayName)) {
             // Check if display name is in active use
             sendMessage('USER_CONNECT', { displayName });
-            serverResponseTimer = setTimeout(() => setErr('Server unresponsive.'), 500);
         }
         e.target[0].value = '';
     }
