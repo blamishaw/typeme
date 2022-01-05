@@ -1,10 +1,18 @@
-import React, { useContext } from 'react';
+import React, { useContext, useRef, useEffect } from 'react';
 import { WebSocketContext } from '../network/WebSocketContext';
 import { useIsMobile } from '../hooks/useIsMobile'; 
 
 const SendMessage = () => {
     const { displayName, sendMessage } = useContext(WebSocketContext);
     const isMobile = useIsMobile();
+    const inputElement = useRef(0);
+
+    useEffect(() => {
+        inputElement.current.onfocus = () => {
+            window.scrollTo(0, 0);
+            document.body.scrollTop = 0;
+        }
+    })
 
     const handleSendMessage = (e) => {
         e.preventDefault();
@@ -23,6 +31,7 @@ const SendMessage = () => {
                     autoComplete='off' 
                     placeholder='Your message here'
                     className='typeme-input send-message__input'
+                    ref={inputElement}
                 >    
                 </input>
                 <button className='typeme-button send-message__button'>{isMobile ? "–>" : "Send"}</button>
