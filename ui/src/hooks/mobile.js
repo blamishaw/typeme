@@ -32,7 +32,7 @@ export const useMobileSafariKeyboard = (inputRef, formRef) => {
             const onFocus = (e) => {
                 e.preventDefault();
                 e.stopPropagation();
-                setTimeout(() => window.scrollTo(0,0), 150);
+                setTimeout(() => window.scrollTo({top: 0, left: 0, behavior: 'smooth'}), 150);
                 formRef.current.classList.add('mobile-keyboard');
                 document.getElementById('messages-wrapper').style.height = "35%";
             }

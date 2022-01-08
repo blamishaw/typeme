@@ -28,20 +28,19 @@
 
     .send-message__input {
         margin: $xxs-size;
-        border-radius: 30px;
+        border-radius: 20px;
         padding: 0.8rem $s-size;
         font-size: 1rem;
     }
 
     .send-message__button {
-        border-radius: 100%;
+        border-radius: 70%;
         margin: 0 0 0 0.4rem;
         padding: 1rem;
     }
 
     .mobile-keyboard {
-        bottom: 40%;
+        bottom: 15rem;
         padding-bottom: $l-size;
-        position: relative;
     }
 }

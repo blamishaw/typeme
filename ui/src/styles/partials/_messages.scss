@@ -98,6 +98,7 @@
 
 @media (max-width: $mobile-breakpoint) {
     #messages-wrapper {
+        margin-top: 1rem;
         height: -webkit-fill-available;
         -webkit-overflow-scrolling: touch;
         overflow: auto;

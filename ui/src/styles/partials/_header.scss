@@ -40,7 +40,10 @@
     }
 
     .header__subtitle {
-        margin-right: $s-size;
+        margin-left: 5rem;
     }
-    
+
+    .header__display-name {
+        padding-left: $xs-size;
+    }
 }

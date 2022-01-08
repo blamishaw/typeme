@@ -1,6 +1,7 @@
 import React, { useContext, useRef, useEffect } from 'react';
 import { WebSocketContext } from '../network/WebSocketContext';
-import { useIsMobile, useMobileSafariKeyboard } from '../hooks/mobile'; 
+import { useIsMobile, useMobileSafariKeyboard } from '../hooks/mobile';
+import { FaArrowUp } from 'react-icons/fa';
 
 const SendMessage = () => {
     const { displayName, sendMessage } = useContext(WebSocketContext);
@@ -31,7 +32,7 @@ const SendMessage = () => {
                         ref={inputElem}
                     >    
                     </input>
-                    <button className='typeme-button send-message__button'>{isMobile ? "–>" : "Send"}</button>
+                    <button className='typeme-button send-message__button'>{isMobile ? <FaArrowUp /> : "Send"}</button>
                 </form>
             </div>
         </footer>
