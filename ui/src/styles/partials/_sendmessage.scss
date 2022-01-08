@@ -1,17 +1,15 @@
 .send-message {
     bottom: 0;
-    padding-top: 2vh;
+    padding-top: 1rem;
     padding: $m-size;
-    // padding-top: 0;
     position: absolute;
     width: fill;
-    height: 8vh;
+    height: 5rem;
     z-index: 2;
     background: $background-purple;
 }
 
 .send-message__form {
-    // width: 60%;
     display: flex;
     margin: 0;
     overflow: hidden;
@@ -22,6 +20,7 @@
         width: -webkit-fill-available;
         padding-top: 0;
     }
+
     .send-message__form {
         padding-top: $s-size;
         margin: 0;

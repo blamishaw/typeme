@@ -4,6 +4,8 @@ PRINT_MSG () {
     echo $fg_bold[yellow] "$1"
 }
 
+echo "latest built: $(date -u '+%Y-%m-%d -- %H:%M:%S GMT')"  > manifest.txt
+
 PRINT_MSG "STEP [1/3] Building docker image registry.heroku.com/typeme-server/web:latest"
 docker build -t registry.heroku.com/typeme-server/web:latest .
 

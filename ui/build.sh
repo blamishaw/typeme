@@ -4,6 +4,8 @@ PRINT_MSG () {
     echo $fg_bold[yellow] "$1"
 }
 
+echo "latest built: $(date -u '+%Y-%m-%d -- %H:%M:%S GMT')"  > manifest.txt
+
 PRINT_MSG "STEP [1/4] Updating websocket endpoint from dev to prod"
 sed -i '' 's/process.env.REACT_APP_DEV_HOSTNAME/process.env.REACT_APP_WSS_HOSTNAME/' src/network/connect.js
 head -n 10 src/network/connect.js
