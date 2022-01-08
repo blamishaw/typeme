@@ -34,7 +34,6 @@ const App = () => {
                 <Messages />
                 <SendMessage />
             </div>
-            
         </WebSocketContext.Provider>
     );
 }

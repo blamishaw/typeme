@@ -1,7 +1,12 @@
 .send-message {
     bottom: 0;
+    padding-top: 2vh;
     padding: $m-size;
     // padding-top: 0;
+    position: absolute;
+    width: fill;
+    height: 8vh;
+    z-index: 2;
     background: $background-purple;
 }
 
@@ -13,9 +18,13 @@
 }
 
 @media (max-width: $mobile-breakpoint) {
+    .send-message{
+        width: -webkit-fill-available;
+        padding-top: 0;
+    }
     .send-message__form {
+        padding-top: $s-size;
         margin: 0;
-        
     }
 
     .send-message__input {
@@ -29,5 +38,11 @@
         border-radius: 100%;
         margin: 0 0 0 0.4rem;
         padding: 1rem;
+    }
+
+    .mobile-keyboard {
+        bottom: 40%;
+        padding-bottom: $l-size;
+        position: relative;
     }
 }

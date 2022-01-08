@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useContext } from 'react';
+import React, { useState, useEffect, useContext, useRef } from 'react';
 import { WebSocketContext } from '../network/WebSocketContext';
 import { processServerMessage } from '../network/connect';
 import Message from './Message';
@@ -16,6 +16,7 @@ const Messages = () => {
     const [messages, setMessages] = useState([]);
     const [colorMap, setColorMap] = useState({});
     const [idx, setIdx] = useState(1);
+    const messagesEnd = useRef(null);
 
     useEffect(() => {
         // If we receive a textual message
@@ -32,10 +33,14 @@ const Messages = () => {
         });
     }, [serverMessage])
 
-    let messagesEnd = undefined;
     useEffect(() => {
-      // Scrolls to end of messages as they are added to the chat
-      messagesEnd.scrollIntoView({ behavior: 'smooth' });
+        const scroll = () => {
+            messagesEnd.current.scrollIntoView({ behavior: 'smooth' });
+            window.scrollTo(0,0);
+        }
+        // Scrolls to end of messages as they are added to the chat
+        scroll();
+      
     }, [ messages ])
 
     // Assigns and gets a message color for a user
@@ -47,13 +52,15 @@ const Messages = () => {
     }
 
     return (
-        <div className="messages-container messages-wrapper">
-            <div className="messages">
-            {messages.map((message, idx) => 
-                <Message key={idx} from={message.from} content={message.content} colorId={colorMap[message.from]}/>)}
-            </div>
-            <div ref={(el) => messagesEnd = el}/>
-        </div>
+        <main>
+            <section id='messages-wrapper'>
+                <div className="messages">
+                {messages.map((message, idx) => 
+                    <Message key={idx} from={message.from} content={message.content} colorId={colorMap[message.from]}/>)}
+                </div>
+                <div ref={messagesEnd}/>
+            </section>
+        </main>
     );
 }
 

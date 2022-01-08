@@ -1,15 +1,18 @@
-.messages-wrapper {
+#messages-wrapper {
     background-color: $background-purple;
-    max-height: 73vh;
+    position: absolute;
     overflow: scroll;
-    padding: 0 0;
+    width: 100vw;
+    height: fill;
+    padding: 0;
+    padding: 10vh 0;
     justify-content: space-between;
     z-index: 1;
 }
 
 .messages {
     padding: $xl-size $s-size;
-    flex-shrink: 2;
+    // flex-shrink: 2;
     margin-top: $xxs-size;
 }
 
@@ -91,4 +94,12 @@
 .message-ctx__content {
     color: $text-purple;
     font-style: italic;
+}
+
+@media (max-width: $mobile-breakpoint) {
+    #messages-wrapper {
+        height: -webkit-fill-available;
+        -webkit-overflow-scrolling: touch;
+        overflow: auto;
+    }
 }
