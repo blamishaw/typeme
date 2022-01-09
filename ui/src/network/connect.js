@@ -6,7 +6,7 @@ const MAX_RECONNECT_ATTEMPTS = 5;
 // On socket close, we attempt to reconnect to the server with an exponential backoff
 let missedHeartBeats = 0;
 export const connect = (ws, setServerMessage, setReadyState) => {
-    ws.current = new W3CWebSocket(process.env.REACT_APP_DEV_HOSTNAME);
+    ws.current = new W3CWebSocket(process.env.REACT_APP_WSS_HOSTNAME);
 
     ws.current.onopen = () => {
         console.log('Client Connected');

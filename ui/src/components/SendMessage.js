@@ -3,10 +3,13 @@ import { WebSocketContext } from '../network/WebSocketContext';
 import { useIsMobile, useMobileSafariKeyboard } from '../hooks/mobile';
 import { FaArrowUp } from 'react-icons/fa';
 
+// Component for the send message input bar
 const SendMessage = () => {
     const { displayName, sendMessage } = useContext(WebSocketContext);
     const isMobile = useIsMobile();
     
+    // Messy handling of iOS keyboard to emulate native chat apps
+    // I only handle iOS right now because ... I have an iPhone
     const inputElem = useRef(null);
     const formElem = useRef(null);
     useMobileSafariKeyboard(inputElem, formElem);

@@ -36,14 +36,23 @@
     }
 
     .header__title {
+        margin-top: $xl-size;
         margin-left: $m-size;
     }
 
     .header__subtitle {
-        margin-left: 5rem;
+        margin-right: 2rem;
+        text-align: left;
+        margin-left: 0;
+        margin-top: $xxl-size;
+    }
+
+    .header__icon {
+        vertical-align: middle;
     }
 
     .header__display-name {
         padding-left: $xs-size;
+        vertical-align: middle;
     }
 }

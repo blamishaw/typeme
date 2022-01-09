@@ -16,6 +16,10 @@ docker build -t registry.heroku.com/typeme-app/web:latest .
 PRINT_MSG "STEP [3/4] Pushing image to heroku registry"
 docker push registry.heroku.com/typeme-app/web:latest
 
+PRINT_MSG "Resetting websocket endpoint to dev"
+sed -i '' 's/process.env.REACT_APP_WSS_HOSTNAME/process.env.REACT_APP_DEV_HOSTNAME/' src/network/connect.js
+head -n 10 src/network/connect.js
+
 PRINT_MSG "STEP [4/4] Releasing image on typeme-app dyno"
 heroku container:release web -a typeme-app
 
