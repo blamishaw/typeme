@@ -1,10 +1,16 @@
 import React, { useContext } from 'react';
 import { WebSocketContext } from '../network/WebSocketContext';
 
-const Message = ({ from, content, colorId }) => {
+const Message = ({ from, content, date, colorId }) => {
     const { displayName } = useContext(WebSocketContext);
     const fromSelf = (from === displayName);
     const ctxMsg = (content === 'disconnect' || content === 'connect');
+    
+    const getTimeStamp = (date) => {
+        const timeStamp = new Date(date).toLocaleTimeString().split(':');
+        const meridian = timeStamp[2].split(' ')[1]
+        return `${timeStamp[0]}:${timeStamp[1]} ${meridian}`;
+    }
 
     if (ctxMsg) {
         return (
@@ -16,12 +22,15 @@ const Message = ({ from, content, colorId }) => {
 
     return (
         <div>
-            <div className={`message ${fromSelf ? "self" : `other-${colorId}`}`}>
-                <p className="message__content">{content}</p>
+            <div className={`message ${fromSelf ? "self" : 'other'}`}>
+                    <p className='message__timestamp'>{getTimeStamp(date)}</p>
+                    <div className={`message__bubble ${fromSelf ? '' : 'color'+colorId}`}>
+                        <p className="message__content">{content}</p>
+                    </div>
             </div>
             {!fromSelf && <p className="message__from">{from}</p>}
         </div>
     );
-}
+};
 
 export default Message;

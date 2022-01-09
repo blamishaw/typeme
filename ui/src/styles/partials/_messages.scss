@@ -12,13 +12,13 @@
 
 .messages {
     padding: $xl-size $s-size;
-    // flex-shrink: 2;
     margin-top: $xxs-size;
 }
 
+
+
 .message {
-    padding: $xs-size;
-    border-radius: 15px;
+    
     margin-bottom: $xxs-size;
     width: fit-content;
     max-width: 66%;
@@ -26,48 +26,81 @@
 }
 
 .self {
-    background: $self-message-color;
+    display: grid;
+    grid-template-rows: 1fr;
+    grid-template-columns: 2fr 1fr;
     margin: 1rem 1rem 1rem auto ;
-    box-shadow: 8px 8px 2px rgba($self-message-color, 0.35);
-    text-align: left;
 }
 
-.other-1 {
+.other {
+    display: grid;
+    grid-template-rows: 1fr;
+    grid-template-columns: 1fr 2fr;
+    margin: 1rem;
+    align-items: flex-end;
+}
+
+.color1 {
     background: nth($message-colors, 1);
     box-shadow: -8px 8px 2px rgba(nth($message-colors, 1), 0.35);
-    align-items: flex-end;
+    
 }
 
-.other-2 {
+.color2 {
     background: nth($message-colors, 2);
     box-shadow: -8px 8px 2px rgba(nth($message-colors, 2), 0.35);
-    align-items: flex-end;
 }
 
-.other-3 {
+.color3 {
     background: nth($message-colors, 3);
     box-shadow: -8px 8px 2px rgba(nth($message-colors, 3), 0.35);
-    align-items: flex-end;
 }
 
-.other-4 {
+.color4 {
     background: nth($message-colors, 4);
     box-shadow: -8px 8px 2px rgba(nth($message-colors, 4), 0.35);
-    align-items: flex-end;
 }
 
-.other-5 {
+.color5 {
     background: nth($message-colors, 5);
     box-shadow: -8px 8px 2px rgba(nth($message-colors, 5), 0.35);
-    align-items: flex-end;
 }
 
-.other-6 {
+.color6 {
     background: nth($message-colors, 6);
     box-shadow: -8px 8px 2px rgba(nth($message-colors, 6), 0.35);
-    align-items: flex-end;
 }
 
+.message__bubble {
+    padding: $xs-size;
+    border-radius: 15px;
+    width: fit-content;
+}
+
+.self > .message__bubble {
+    margin: 1rem 1rem 1rem auto ;
+    background: $self-message-color;
+    box-shadow: 8px 8px 2px rgba($self-message-color, 0.35);
+}
+
+.message__timestamp {
+    color: $text-purple;
+    font-style: italic;
+    margin-top: 3rem;
+    margin-bottom: 0;
+}
+
+.self > .message__timestamp {
+    margin-right: $s-size;
+    text-align: right;
+    grid-area: 1 / 1 / 1 / 2;
+}
+
+.other > .message__timestamp {
+    margin-left: $s-size;
+    text-align: left;
+    grid-area: 1 / 2 / 1 / 3;
+}
 
 .message__content {
     margin: $xs-size;
@@ -76,6 +109,14 @@
     overflow-wrap: break-word;
     font-size: 1rem;
     font-weight: 300;
+}
+
+.self > .message__content {
+    grid-area: 1 / 2 / 1 / 3;
+}
+
+.other > .message__content {
+    grid-area: 1 / 1 / 1 / 2;
 }
 
 .message__from {
