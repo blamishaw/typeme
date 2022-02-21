@@ -98,7 +98,8 @@ const sendUTFMessage = (connection, type, message) => {
     connection.sendUTF(JSON.stringify(
         {
             type,
-            message
+            message,
+            date: new Date()
         }
     ))
 }
