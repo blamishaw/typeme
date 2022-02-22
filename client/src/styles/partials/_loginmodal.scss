@@ -32,6 +32,11 @@
     color: $message-red;
 }
 
+.modal__ctx_msg {
+    font-style: italic;
+    color: $message-green;
+}
+
 .modal__info {
     color: $text-purple;
 }

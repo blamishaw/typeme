@@ -10,6 +10,7 @@ const LoginModal = ({ setDisplayName }) => {
 
     const [modalIsOpen, setModalIsOpen] = useState(true);
     const [err, setErr] = useState('');
+    const [ctxMsg, setCtxMsg] = useState('');
 
     useEffect(() => {
         processServerMessage('CTX_REJECT', serverMessage, () => {
@@ -50,6 +51,7 @@ const LoginModal = ({ setDisplayName }) => {
         if (isValidDisplayName(displayName)) {
             // Check if display name is in active use
             sendMessage('USER_CONNECT', { displayName });
+            setCtxMsg('Loading...');
         }
         e.target[0].value = '';
     }
@@ -66,6 +68,7 @@ const LoginModal = ({ setDisplayName }) => {
             </form>
             <h3 className="modal__info">Display names must be 13 characters or less</h3>
             <h4 className="modal__error">{err}</h4>
+            <h4 className="modal__ctx_msg">{ctxMsg}</h4>
         </Modal>
     );
 }
