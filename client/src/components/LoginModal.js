@@ -50,8 +50,8 @@ const LoginModal = ({ setDisplayName }) => {
         const displayName = inputText.trim();
         if (isValidDisplayName(displayName)) {
             // Check if display name is in active use
+            setCtxMsg('Connecting...');
             sendMessage('USER_CONNECT', { displayName });
-            setCtxMsg('Loading...');
         }
         e.target[0].value = '';
     }

@@ -60,7 +60,7 @@ wsServer.on('request', (request) => {
 })
 
 // Util functions
-const handleMessage = (connection, data) => {
+const handleMessage = async (connection, data) => {
     const { type, message } = data;
     switch (type) {
         case 'USER_CONNECT':
