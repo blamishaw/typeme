@@ -44,7 +44,7 @@ const LoginModal = ({ setDisplayName }) => {
         return true;
     }
 
-    const handleSubmitForm = async (e) => {
+    const handleSubmitForm = (e) => {
         e.preventDefault();
         const inputText = e.target[0].value;
         const displayName = inputText.trim();
