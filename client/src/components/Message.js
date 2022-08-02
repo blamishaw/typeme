@@ -1,7 +1,7 @@
 import React, { useContext } from 'react';
 import { WebSocketContext } from '../network/WebSocketContext';
 
-const Message = ({ from, content, date, colorId }) => {
+const Message = ({ from, content, location, date, colorId }) => {
     const { displayName } = useContext(WebSocketContext);
     const fromSelf = (from === displayName);
     const ctxMsg = (content === 'disconnect' || content === 'connect');
@@ -28,7 +28,7 @@ const Message = ({ from, content, date, colorId }) => {
                         <p className="message__content">{content}</p>
                     </div>
             </div>
-            {!fromSelf && <p className="message__from">{from}</p>}
+            {!fromSelf && <p className="message__from">{from} – {location} mi away</p>}
         </div>
     );
 };

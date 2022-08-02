@@ -2,6 +2,7 @@ import React, { useState, useContext, useEffect } from 'react';
 import Modal from 'react-modal';
 import { WebSocketContext } from '../network/WebSocketContext';
 import { processServerMessage } from '../network/connect';
+import { registerUserInRadar, getUserLocation } from '../network/location';
 
 Modal.setAppElement('#root');
 
@@ -44,16 +45,26 @@ const LoginModal = ({ setDisplayName }) => {
         return true;
     }
 
+    const connectUser = (displayName) => {
+        setCtxMsg('Connecting...');
+        // Fetch location using Radar API and send to server
+        registerUserInRadar(displayName);
+        getUserLocation(displayName).then(
+            userLocation => sendMessage('USER_CONNECT', { displayName }, userLocation)
+        )
+    }
+
     const handleSubmitForm = (e) => {
         e.preventDefault();
         const inputText = e.target[0].value;
         const displayName = inputText.trim();
+        // Check if display name is in active use
         if (isValidDisplayName(displayName)) {
-            // Check if display name is in active use
-            setCtxMsg('Connecting...');
-            sendMessage('USER_CONNECT', { displayName });
+            connectUser(displayName);
+        } else{
+            e.target[0].value = '';
         }
-        e.target[0].value = '';
+        
     }
 
     return (

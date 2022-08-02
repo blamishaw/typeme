@@ -21,14 +21,14 @@ const Messages = () => {
     useEffect(() => {
         // If we receive a textual message
         processServerMessage('MESSAGE', serverMessage, () => {
-            setMessages(prevMessages => [...prevMessages, { message: serverMessage.message, date: serverMessage.date }]);
+            setMessages(prevMessages => [...prevMessages, { message: serverMessage.message, location: serverMessage.location, date: serverMessage.date }]);
             getMessageColor(serverMessage.message.from);
         });
         // If we receive a user 'connect' or 'disconnect' message
         processServerMessage('USER_CTX_MSG', serverMessage, () => {
             // Don't display our own connection message
             if (serverMessage.message.from !== displayName) {
-                setMessages(prevMessages => [...prevMessages, { message: serverMessage.message, date: serverMessage.date }]);
+                setMessages(prevMessages => [...prevMessages, { message: serverMessage.message, location: serverMessage.location, date: serverMessage.date }]);
             }
         });
     }, [serverMessage])
@@ -55,8 +55,8 @@ const Messages = () => {
         <main>
             <section id='messages-wrapper'>
                 <div className="messages">
-                {messages.map(({ message, date }, idx) => 
-                    <Message key={idx} from={message.from} content={message.content} date={date} colorId={colorMap[message.from]}/>)}
+                {messages.map(({ message, location, date }, idx) => 
+                    <Message key={idx} from={message.from} content={message.content} location={location} date={date} colorId={colorMap[message.from]}/>)}
                 </div>
                 <div ref={messagesEnd}/>
             </section>

@@ -1,5 +1,6 @@
 import React, { useContext, useRef, useEffect } from 'react';
 import { WebSocketContext } from '../network/WebSocketContext';
+import { getUserLocation } from '../network/location';
 import { useIsMobile, useMobileSafariKeyboard } from '../hooks/mobile';
 import { FaArrowUp } from 'react-icons/fa';
 
@@ -19,7 +20,9 @@ const SendMessage = () => {
         const inputText = e.target[0].value;
         if (inputText) {
             const message = inputText.trim();
-            sendMessage('MESSAGE', { from: displayName, content: message });
+            getUserLocation(displayName).then(
+                userLocation => sendMessage('MESSAGE', { from: displayName, content: message }, userLocation)
+            )
             e.target[0].value = '';
         }
     }

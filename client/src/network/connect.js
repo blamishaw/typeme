@@ -46,11 +46,12 @@ export const connect = (ws, setServerMessage, setReadyState) => {
 }
 
 // Send message to server
-export const sendWSMessage = (ws, type, message) => {
+export const sendWSMessage = (ws, type, message, location) => {
     try {
         ws.current.send(JSON.stringify({
             type,
-            message
+            message,
+            location
         }));
     } catch(e) {
         throw new Error("Message failed to send.");

@@ -1,6 +1,7 @@
 const WebSocketServer = require('websocket').server;
 const http = require('http');
 const uuid = require('uuid');
+const utils = require('./utils');
 const port = process.env.PORT || 8080;
 
 const MAX_CONNECTIONS = 8;
@@ -22,6 +23,7 @@ wsServer = new WebSocketServer({
 
 
 let activeDisplayNames = {};
+let locationMetadata = {};
 
 // Handle websocket server request event
 wsServer.on('request', (request) => {
@@ -52,32 +54,38 @@ wsServer.on('request', (request) => {
     // On close event, remove the connection from the list of current clients
     connection.on('close', (reasonCode, description) => {
         if (connection.id in activeDisplayNames) {
-            broadcastUTFMessage('USER_CTX_MSG', { from: activeDisplayNames[connection.id], content: 'disconnect' });
+            broadcastUTFMessage('USER_CTX_MSG', { from: activeDisplayNames[connection.id], content: 'disconnect' }, null);
             delete activeDisplayNames[connection.id];
+            delete locationMetadata[connection.id];
         }
         console.log((new Date()) + `Connection ${connection.id} disconnected.\nActive clients ${getActiveClients()}`);
     });
 })
 
-// Util functions
-const handleMessage = async (connection, data) => {
-    const { type, message } = data;
+// Handle message payloads from clients
+const handleMessage = (connection, data) => {
+    const { type, message, location } = data;
     switch (type) {
         case 'USER_CONNECT':
-            console.log(`Received ${type} message to reserve display name "${message.displayName}" for id: ${connection.id}`);
+            const { displayName } = message;
+            console.log(`Received ${type} message to reserve display name "${displayName}" for id: ${connection.id}`);
             // Check if display name is already taken
-            if (!Object.values(activeDisplayNames).includes(message.displayName)) {
-                activeDisplayNames[connection.id] = message.displayName;
-                sendUTFMessage(connection, 'USER_ACCEPT', message.displayName);
-                broadcastUTFMessage('USER_CTX_MSG', { from: activeDisplayNames[connection.id], content: 'connect' });
+            if (!Object.values(activeDisplayNames).includes(displayName)) {
+                // Store display name and location information
+                activeDisplayNames[connection.id] = displayName;
+                locationMetadata[connection.id] = location;
+                // Send ctx accept message back to user and broadcast user connected to all connected clients
+                sendUTFMessage(connection, 'USER_ACCEPT', displayName, location);
+                broadcastUTFMessage('USER_CTX_MSG', { from: activeDisplayNames[connection.id], content: 'connect' }, location);
             } else {
-                sendUTFMessage(connection, 'USER_REJECT', message.displayName);
+                sendUTFMessage(connection, 'USER_REJECT', displayName, location);
             }
             break;
         case 'MESSAGE':
             // Broadcast received message to all currently active clients
             console.log(`Received ${type} message from "${message.from}" with content "${message.content}"`);
-            broadcastUTFMessage(type, message);
+            locationMetadata[connection.id] = location;
+            broadcastUTFMessage(type, message, location);
             break;
         default:
             console.log(`Received ${type} with message %j`, message);
@@ -85,20 +93,24 @@ const handleMessage = async (connection, data) => {
     }
 }
 
-const broadcastUTFMessage = (type, message) => {
-    console.log(`Sending broadcast of type ${type} with message %j`, message);
+// Broadcast message to all connected clients
+const broadcastUTFMessage = (type, message, location) => {
+    console.log(`Sending broadcast of type ${type} with message %j from location %j`, message, location);
     wsServer.connections.forEach(client => {
         if (client.id in activeDisplayNames){
-            sendUTFMessage(client, type, message);
+            const distanceBetweenClients = utils.getHaversineDistance(location, locationMetadata[client.id]);
+            sendUTFMessage(client, type, message, distanceBetweenClients);
         }
     });
 }
 
-const sendUTFMessage = (connection, type, message) => {
+// Send message over connection in UTF format
+const sendUTFMessage = (connection, type, message, location) => {
     connection.sendUTF(JSON.stringify(
         {
             type,
             message,
+            location,
             date: new Date()
         }
     ))

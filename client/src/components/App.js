@@ -19,8 +19,8 @@ const App = () => {
         return connect(ws, setServerMessage, setReadyState);
     }, [])
 
-    const sendMessage = (type, message) => {
-        sendWSMessage(ws, type, message);
+    const sendMessage = (type, message, location) => {
+        sendWSMessage(ws, type, message, location);
     }
 
     if (readyState === 3) {
